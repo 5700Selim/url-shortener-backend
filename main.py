@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import random
 import string
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 
@@ -29,6 +30,6 @@ def shorten_url(request: URLRequest):
 @app.get("/{short_code}")
 def redirect_url(short_code: str):
     if short_code in url_store:
-        return {"original_url": url_store[short_code]}
+        return RedirectResponse(url_store[short_code])
     else:
         return {"error": "Short URL not found"}
